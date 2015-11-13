@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
 
 public class GameScreen implements Screen{
 	
@@ -14,7 +15,7 @@ public class GameScreen implements Screen{
 	final private Player player;
 	
 	//bg elements
-	private Sprite bg;
+	private Background myBackground;
 	private Sprite train;
 	
 	private OrthographicCamera camera;
@@ -22,15 +23,23 @@ public class GameScreen implements Screen{
 	public GameScreen(GameJam game) {
 		this.game = game;
 		this.player = new Player(this.game);
+		this.myBackground = new Background();
+		myBackground.Init();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 768);
 		
-		Texture bgImg = new Texture(Gdx.files.internal("playerSprite.png"));
 		Texture trainImg = new Texture(Gdx.files.internal("playerSprite.png"));
 		
-		bg = new Sprite(bgImg, 10,10);
 		train = new Sprite(trainImg, 76,136);
 		train.setY(400);
+	}
+	
+	public void Update(float aDeltaTime)
+	{
+		camera.update();
+		player.update(aDeltaTime);
+		
+		myBackground.Update(aDeltaTime);
 	}
 	
 	public void render(float delta) {
@@ -38,11 +47,13 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.batch.setProjectionMatrix(camera.combined);
 		
-		camera.update();
-		player.update(delta);
+		Update(delta);
 		
 		// Render the train
 		game.batch.begin();
+		
+		myBackground.Draw(game.batch);
+		
 		for(int i = 0; i < 10; ++i){
 			train.setX(i * 80);
 			train.draw(game.batch);
