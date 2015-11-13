@@ -43,8 +43,6 @@ public class GameScreen implements Screen{
 	public void Update(float aDeltaTime)
 	{
 		camera.update();
-		player.update(aDeltaTime);
-		
 		myBackground.Update(aDeltaTime);
 	}
 	
@@ -67,6 +65,8 @@ public class GameScreen implements Screen{
 		game.batch.end();
 		
 		updateEnemy();
+		player.update(delta);
+
 	}
 
 	
