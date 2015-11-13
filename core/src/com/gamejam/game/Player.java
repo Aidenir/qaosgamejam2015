@@ -13,7 +13,7 @@ public class Player {
 	
 	final private GameJam game;
 	final private int FRAME_COLS = 6;
-	final private int FRAME_ROWS = 4;
+	final private int FRAME_ROWS = 5;
 	
 	//Graphics and stuff for player
 	Animation runAnimation;
@@ -28,8 +28,10 @@ public class Player {
 	private int playerImgHeight;
 
 	private boolean isJumping;
-	private int jumpSpeed = 600;
+	private int jumpSpeed = 900;
 	private int jumpHeight = 300;
+	private int baseY = 100;
+	private int baseX = 100;
 
 	private boolean goingDown;
 	
@@ -37,12 +39,13 @@ public class Player {
 		this.game = game;
 		
 		playerImg = new Texture(Gdx.files.internal("playerSprite.png"));
-		playerSprite = new Sprite(playerImg, 76,136);
-		playerSprite.setX(50);
-		playerSprite.setY(50);
+		playerSprite = new Sprite(playerImg, 85,102);
+		playerSprite.setScale(2);
+		playerSprite.setX(baseX);
+		playerSprite.setY(baseY);
 		isJumping = false;
 		
-		playerSheet = new Texture(Gdx.files.internal("playerSprite2.png"));
+		playerSheet = new Texture(Gdx.files.internal("playerSheet.png"));
 		TextureRegion[][] tmp = TextureRegion.split(playerSheet, playerSheet.getWidth()/FRAME_COLS, playerSheet.getHeight()/FRAME_ROWS);
 		playerFrames = new TextureRegion[FRAME_COLS*FRAME_ROWS];
 		int index = 0;
@@ -62,31 +65,28 @@ public class Player {
 		this.handleInput();
 		stateTime += Gdx.graphics.getDeltaTime();
 		currentFrame = runAnimation.getKeyFrame(stateTime, true);
-		
+		playerSprite.setRegion(currentFrame);
 		
 		if(isJumping){
 			if(playerSprite.getY() > jumpHeight){
 				this.goingDown = true;
 			}
-			else if(playerSprite.getY() <= 50){
+			else if(playerSprite.getY() <= baseY){
 				isJumping = false;
 				goingDown = false;
 			}
 			
 			if(goingDown){
 				playerSprite.setY(playerSprite.getY() - jumpSpeed * delta);
-				if(playerSprite.getY() < 50 ) playerSprite.setY(50);
+				if(playerSprite.getY() < baseY ) playerSprite.setY(baseY);
 			}else{
 				playerSprite.setY(playerSprite.getY() + jumpSpeed * delta);
 			}
 		}
 		
 		game.batch.begin();
-		if(isJumping){
-			playerSprite.draw(game.batch);
-		}else{
-			game.batch.draw(currentFrame, 50,50);
-		}
+		//game.batch.draw(currentFrame, playerSprite.getX(),playerSprite.getY());
+		playerSprite.draw(game.batch);
 		game.batch.end();
 	}
 	
