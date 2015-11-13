@@ -17,6 +17,10 @@ public class GameScreen implements Screen{
 	private Sprite bg;
 	private Sprite train;
 	
+	//tMp shit
+	private Sprite enemy;
+	
+	
 	private OrthographicCamera camera;
 
 	public GameScreen(GameJam game) {
@@ -31,6 +35,8 @@ public class GameScreen implements Screen{
 		bg = new Sprite(bgImg, 10,10);
 		train = new Sprite(trainImg, 76,136);
 		train.setY(400);
+		
+		setupEnemy();
 	}
 	
 	public void render(float delta) {
@@ -48,8 +54,29 @@ public class GameScreen implements Screen{
 			train.draw(game.batch);
 		}
 		game.batch.end();
+		
+		updateEnemy();
 	}
 
+	
+	public void setupEnemy(){
+		Texture img = new Texture(Gdx.files.internal("playerSprite.png"));
+		enemy = new Sprite(img, 76,136);
+		enemy.setScale(1.0f);
+		enemy.setY(100);
+		enemy.setX(game.screenWidth + 300);
+	}
+	
+	public void updateEnemy(){
+		game.batch.begin();
+		enemy.setX(enemy.getX() - 200 * Gdx.graphics.getDeltaTime());
+		if(enemy.getX() < - 100){
+			enemy.setX(game.screenWidth + 300);
+		}
+		enemy.draw(game.batch);
+		game.batch.end();
+	}
+	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub

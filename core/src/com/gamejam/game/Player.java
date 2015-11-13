@@ -22,7 +22,7 @@ public class Player {
 	TextureRegion currentFrame;
 	float stateTime;
 	
-	private Sprite playerSprite;
+	public Sprite playerSprite;
 	private Texture playerImg;
 	private int playerImgWidth;
 	private int playerImgHeight;
@@ -40,7 +40,7 @@ public class Player {
 		
 		playerImg = new Texture(Gdx.files.internal("playerSprite.png"));
 		playerSprite = new Sprite(playerImg, 85,102);
-		playerSprite.setScale(2);
+		playerSprite.setScale(1);
 		playerSprite.setX(baseX);
 		playerSprite.setY(baseY);
 		isJumping = false;
@@ -68,19 +68,18 @@ public class Player {
 		playerSprite.setRegion(currentFrame);
 		
 		if(isJumping){
+			if(goingDown){
+				playerSprite.setY(playerSprite.getY() - jumpSpeed * delta);
+				if(playerSprite.getY() < baseY ) playerSprite.setY(baseY);
+			}else{
+				playerSprite.setY(playerSprite.getY() + jumpSpeed * delta);
+			}
 			if(playerSprite.getY() > jumpHeight){
 				this.goingDown = true;
 			}
 			else if(playerSprite.getY() <= baseY){
 				isJumping = false;
 				goingDown = false;
-			}
-			
-			if(goingDown){
-				playerSprite.setY(playerSprite.getY() - jumpSpeed * delta);
-				if(playerSprite.getY() < baseY ) playerSprite.setY(baseY);
-			}else{
-				playerSprite.setY(playerSprite.getY() + jumpSpeed * delta);
 			}
 		}
 		
