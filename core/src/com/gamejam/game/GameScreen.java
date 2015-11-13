@@ -4,12 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class GameScreen implements Screen{
 	
 	// Constants
 	final private GameJam game;
 	final private Player player;
+	
+	//bg elements
+	private Sprite bg;
+	private Sprite train;
 	
 	private OrthographicCamera camera;
 
@@ -18,6 +24,13 @@ public class GameScreen implements Screen{
 		this.player = new Player(this.game);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 768);
+		
+		Texture bgImg = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture trainImg = new Texture(Gdx.files.internal("playerSprite.png"));
+		
+		bg = new Sprite(bgImg, 10,10);
+		train = new Sprite(trainImg, 76,136);
+		train.setY(400);
 	}
 	
 	public void render(float delta) {
@@ -27,6 +40,14 @@ public class GameScreen implements Screen{
 		
 		camera.update();
 		player.update(delta);
+		
+		// Render the train
+		game.batch.begin();
+		for(int i = 0; i < 10; ++i){
+			train.setX(i * 80);
+			train.draw(game.batch);
+		}
+		game.batch.end();
 	}
 
 	@Override

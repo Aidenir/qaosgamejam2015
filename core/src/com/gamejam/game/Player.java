@@ -106,6 +106,7 @@ public class Player {
 			// TODO Auto-generated method stub
 			return false;
 		}
+		
 
 		@Override
 		public boolean fling(float velocityX, float velocityY, int button) {
