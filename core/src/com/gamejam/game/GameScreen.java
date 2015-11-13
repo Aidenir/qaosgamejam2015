@@ -6,12 +6,15 @@ public class GameScreen implements Screen{
 	
 	// Constants
 	final private GameJam game;
+	final private Player player;
 	
 	public GameScreen(GameJam game) {
 		this.game = game;
+		this.player = new Player(this.game);
 	}
 	
 	public void render(float delta) {
+		player.update(delta);
 	}
 
 	@Override
