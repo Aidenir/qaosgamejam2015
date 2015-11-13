@@ -2,7 +2,9 @@ package com.gamejam.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -10,8 +12,16 @@ import com.badlogic.gdx.math.Vector2;
 public class Player {
 	
 	final private GameJam game;
-
+	final private int FRAME_COLS = 6;
+	final private int FRAME_ROWS = 4;
+	
 	//Graphics and stuff for player
+	Animation runAnimation;
+	Texture playerSheet;
+	TextureRegion[] playerFrames;
+	TextureRegion currentFrame;
+	float stateTime;
+	
 	private Sprite playerSprite;
 	private Texture playerImg;
 	private int playerImgWidth;
@@ -32,12 +42,27 @@ public class Player {
 		playerSprite.setY(50);
 		isJumping = false;
 		
+		playerSheet = new Texture(Gdx.files.internal("playerSprite2.png"));
+		TextureRegion[][] tmp = TextureRegion.split(playerSheet, playerSheet.getWidth()/FRAME_COLS, playerSheet.getHeight()/FRAME_ROWS);
+		playerFrames = new TextureRegion[FRAME_COLS*FRAME_ROWS];
+		int index = 0;
+		for(int i = 0; i < FRAME_ROWS; ++i){
+			for(int j = 0 ; j < FRAME_COLS; ++j){
+				playerFrames[index++] = tmp[i][j];
+			}
+		}
+		runAnimation = new Animation(0.025f, playerFrames);
+		stateTime = 0f;
+		
 		Gdx.input.setInputProcessor(new GestureDetector(new SwipeGestureHandler()));
 
 	}
 	
 	public void update(float delta){
 		this.handleInput();
+		stateTime += Gdx.graphics.getDeltaTime();
+		currentFrame = runAnimation.getKeyFrame(stateTime, true);
+		
 		
 		if(isJumping){
 			if(playerSprite.getY() > jumpHeight){
@@ -57,7 +82,11 @@ public class Player {
 		}
 		
 		game.batch.begin();
-		playerSprite.draw(game.batch);
+		if(isJumping){
+			playerSprite.draw(game.batch);
+		}else{
+			game.batch.draw(currentFrame, 50,50);
+		}
 		game.batch.end();
 	}
 	
