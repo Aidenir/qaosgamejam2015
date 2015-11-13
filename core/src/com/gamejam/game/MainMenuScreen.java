@@ -1,7 +1,7 @@
 package com.gamejam.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 public class MainMenuScreen implements Screen {
@@ -25,7 +25,9 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
+		if(Gdx.input.isTouched()){
+			this.game.setScreen(new GameScreen(this.game));
+		}
 		
 	}
 

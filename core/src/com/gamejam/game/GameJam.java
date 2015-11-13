@@ -21,10 +21,11 @@ public class GameJam extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-
+		this.setScreen(new MainMenuScreen(this));
 	}
 
 	public void render () {
+		super.render();
 
 	}
 	
