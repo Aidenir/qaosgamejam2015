@@ -22,6 +22,7 @@ public class Train
 	
 	private Sprite myWindowTile;
 	private Sprite myEndTile;
+	private Sprite[] wheels;
 	
 
 	private final float myScale = 1;
@@ -52,6 +53,14 @@ public class Train
 			AddTrainTileToEnd();
 		}
 		
+		wheels = new Sprite[4];
+		Texture wheel = new Texture(Gdx.files.internal("wheel.png"));
+		for(int i = 0; i < 4; ++i){
+			wheels[i] = new Sprite(wheel, 10,10);
+			wheels[i].setY(50);
+			wheels[i].setX(50 + 50*i);
+		}
+		
 	}
 	
 	void AddTrainTileToEnd()
@@ -73,7 +82,10 @@ public class Train
 	{
 		CheckIfTileIsIfOutsideScreen(0);
 		float movementThisFrame = aDeltaTime * aTrainSpeed;
-		
+		for(int i = 0; i < 4; ++i){
+			wheels[i].setX(wheels[i].getX() + movementThisFrame);
+			wheels[i].rotate(45);
+		}
 		UpdateTrainTilePositions(movementThisFrame);
 	}
 	
@@ -99,6 +111,9 @@ public class Train
 		for(int i=0; i < myTrainTiles.size(); i++)	
 		{
 			myTrainTiles.get(i).draw(aBatch);
+		}
+		for(int i = 0; i < 4; ++i){
+			wheels[i].draw(aBatch);
 		}
 	}
 }
