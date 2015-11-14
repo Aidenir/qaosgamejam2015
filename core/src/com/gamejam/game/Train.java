@@ -25,7 +25,7 @@ public class Train
 	private Sprite[] wheels;
 	
 
-	private final float myScale = 1;
+	private final float myScale = 1.0f;
 	private final int myAmountOfTrainParts = 8;
 	private final float myTileYPosition = 20;
 	
@@ -36,9 +36,9 @@ public class Train
 		Texture windowTexture = new Texture(Gdx.files.internal("trainWindows.png"));
 		Texture endTexture = new Texture(Gdx.files.internal("trainEndPiece.png"));
 		
-		myWindowTile = new Sprite(windowTexture,539,594);
+		myWindowTile = new Sprite(windowTexture);
 		myWindowTile.setScale(myScale);
-		myEndTile = new Sprite(endTexture,652,594);
+		myEndTile = new Sprite(endTexture);
 		myEndTile.setScale(myScale);
 		
 		myTrainTiles = new ArrayList<Sprite>();
@@ -85,7 +85,7 @@ public class Train
 		for(int i = 0; i < 4; ++i){
 			wheels[i].setX(wheels[i].getX() + movementThisFrame);
 			if(wheels[i].getX() < -100){
-				wheels[i].setX(1000);
+				wheels[i].setX(1920);
 			}
 			wheels[i].rotate(10);
 		}

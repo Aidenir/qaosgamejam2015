@@ -118,7 +118,7 @@ public class Enemy {
 				player.decreaseLife(1);
 				hasHurt = true;
 			}
-		}else if(px > ex + 50 && !hasHurt){
+		}else if(px > ex - 50 && !hasHurt){
 			//Enemy die
 			stateTime += Gdx.graphics.getDeltaTime();
 			if(!dead){
