@@ -217,7 +217,7 @@ public class Player {
 	public void decreaseLife(int i) {
 		life--;
 		if(life == 0){
-			game.setScreen(new GameOverScreen(game));
+			((GameScreen) game.getScreen()).gameOver();
 		}
 	}
 }

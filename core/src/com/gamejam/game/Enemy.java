@@ -32,6 +32,7 @@ public class Enemy {
 			this.enemySprite.setY(300);
 			if(!hasHurt){
 				player.decreaseLife(1);
+				Gdx.input.vibrate(100);
 				hasHurt = true;
 			}
 		}

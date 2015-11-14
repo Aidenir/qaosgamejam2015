@@ -4,12 +4,10 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
 
 public class GameScreen implements Screen{
 	
@@ -17,6 +15,7 @@ public class GameScreen implements Screen{
 	final private GameJam game;
 	final public Player player;
 	final private int baseY;
+	final private long starttime;
 	
 	//bg elements
 	private Background myBackground;
@@ -27,7 +26,6 @@ public class GameScreen implements Screen{
 	//Enemies
 	private ArrayList<Enemy> enemies;
 	private long lastEnemySpawn;
-	
 	
 	private OrthographicCamera camera;
 
@@ -40,10 +38,10 @@ public class GameScreen implements Screen{
 		this.myTrain = new Train();
 		myTrain.Init();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1024, 768);
+		camera.setToOrtho(false, game.screenWidth, game.screenHeight);
 		myTrainSpeed = -100;
 		this.enemies = new ArrayList<Enemy>();
-
+		starttime = System.currentTimeMillis();
 		
 	}
 	
@@ -55,15 +53,16 @@ public class GameScreen implements Screen{
 	}
 	
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 	1, 1);
+		Gdx.gl.glClearColor(0, 0, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		long currTime = System.currentTimeMillis();
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		Update(delta);
 		
 		// Render Scene
 		game.batch.begin();
-		
+
 		myBackground.Draw(game.batch);
 		myTrain.Draw(game.batch);
 
@@ -81,6 +80,13 @@ public class GameScreen implements Screen{
 			spawnEnemy();
 		}
 		player.update(delta);
+		//Render time
+		game.batch.begin();
+
+		game.font.setColor(new Color(0,1,0,1));
+		game.font.getData().setScale(3);
+		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 10, game.screenHeight - 10);
+		game.batch.end();
 
 	}
 
@@ -128,5 +134,11 @@ public class GameScreen implements Screen{
 	public void dispose() {
 		this.enemies.clear();
 
+	}
+
+	public void gameOver() {
+		long currTime = System.currentTimeMillis();
+		int score = (int) ((currTime - starttime) / 1000);
+		game.setScreen(new GameOverScreen(game,score));
 	}
 }

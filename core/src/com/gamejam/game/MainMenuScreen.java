@@ -1,5 +1,6 @@
 package com.gamejam.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
@@ -15,7 +16,7 @@ public class MainMenuScreen implements Screen {
 		this.game = game;
 		
 		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(false, 800,480);
+		this.camera.setToOrtho(false, game.screenWidth,game.screenHeight);
 	}
 
 	@Override
@@ -30,16 +31,26 @@ public class MainMenuScreen implements Screen {
 		//Clear the screen
 		Gdx.gl.glClearColor(0,0,0,0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+		game.font.setColor(new Color(1,1,1,1));
+		game.font.getData().setScale(1);
 		this.camera.update();
 		game.batch.setProjectionMatrix(this.camera.combined);
 		
 		game.batch.begin();
+		game.font.getData().setScale(2);		
+		game.font.draw(game.batch, "High Score:", game.screenWidth/2, game.screenHeight - (game.screenHeight / 3) );
+
+		for(int i = 0; i < game.highScore.size() ; ++i){
+			game.font.draw(game.batch, game.highScore.get(i) + "s", game.screenWidth/2, game.screenHeight - (game.screenHeight / 3) - (i + 1)*40);
+		}
+		game.font.getData().setScale(1);
+
+
 		game.font.draw(game.batch, "Escape the angry police officers", 100, 150);
 		game.font.draw(game.batch, "Tap anywhere to begin playing", 100, 100);
 		game.batch.end();
 				
-		if(Gdx.input.isTouched()){
+		if(Gdx.input.justTouched()){
 			this.game.setScreen(new GameScreen(this.game));
 		}
 		
