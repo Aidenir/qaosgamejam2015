@@ -14,7 +14,7 @@ public class GameOverScreen implements Screen{
 	public GameOverScreen(GameJam game, int score) {
 		this.game = game;
 		this.score = score;
-		game.highScore.add(score);
+		game.registerHighScore(score);
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(false, 800,480);
 	}

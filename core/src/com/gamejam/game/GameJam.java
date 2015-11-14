@@ -32,12 +32,12 @@ public class GameJam extends Game {
 
 
 	public void registerHighScore(int score){
+		highScore.add(score);
 		Collections.sort(highScore);
-		if(score > highScore.get(0)){
+		if(highScore.size() > 3){
 			highScore.remove(0);
-			highScore.add(score);
 		}
-		Collections.sort(highScore);
+
 		Collections.reverse(highScore);
 		
 	}
