@@ -12,7 +12,7 @@ public class IntroScreen implements Screen {
 	GameJam game;
 	private OrthographicCamera camera;
 	private Sprite[] images;
-	private int numberOfImages = 3;
+	private int numberOfImages = 2;
 	private int image = 0;
 	
 
@@ -22,7 +22,7 @@ public class IntroScreen implements Screen {
 		this.camera.setToOrtho(false, game.screenWidth,game.screenHeight);
 		this.images = new Sprite[numberOfImages];
 		for(int i = 0;i < numberOfImages ; ++i){
-			Texture tmp = new Texture(Gdx.files.internal("intro" + 1 + ".png"));
+			Texture tmp = new Texture(Gdx.files.internal("intro" + (i + 1) + ".png"));
 			images[i] = new Sprite(tmp, game.screenWidth, game.screenHeight);
 			images[i].setX(0);
 			images[i].setY(0);
