@@ -12,8 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Player {
 	
 	final private GameJam game;
-	final private int FRAME_COLS = 6;
-	final private int FRAME_ROWS = 5;
+	final private int FRAME_COLS = 4;
+	final private int FRAME_ROWS = 1;
 	
 	//Graphics and stuff for player
 	Animation runAnimation;
@@ -24,6 +24,7 @@ public class Player {
 	
 	public Sprite playerSprite;
 	private Texture playerImg;
+	private Texture playerSlide;
 	private int playerImgWidth;
 	private int playerImgHeight;
 
@@ -38,19 +39,22 @@ public class Player {
 	private boolean isSliding;
 	private boolean rising;
 	private int slideSpeed = 150;
-	private int slideDepth = 150; 
+	private int slideDepth = 150;
+	private Texture playerJump; 
 	
 	public Player(GameJam game){
 		this.game = game;
 		
 		playerImg = new Texture(Gdx.files.internal("playerSprite.png"));
+		playerSlide = new Texture(Gdx.files.internal("playerKick.png"));
+		playerJump = new Texture(Gdx.files.internal("playerJump.png"));
 		playerSprite = new Sprite(playerImg, 85,102);
-		playerSprite.setScale(1);
+		playerSprite.setScale(2);
 		playerSprite.setX(baseX);
 		playerSprite.setY(baseY);
 		isJumping = false;
 		
-		playerSheet = new Texture(Gdx.files.internal("playerSheet.png"));
+		playerSheet = new Texture(Gdx.files.internal("playerRunning.png"));
 		TextureRegion[][] tmp = TextureRegion.split(playerSheet, playerSheet.getWidth()/FRAME_COLS, playerSheet.getHeight()/FRAME_ROWS);
 		playerFrames = new TextureRegion[FRAME_COLS*FRAME_ROWS];
 		int index = 0;
@@ -59,7 +63,7 @@ public class Player {
 				playerFrames[index++] = tmp[i][j];
 			}
 		}
-		runAnimation = new Animation(0.025f, playerFrames);
+		runAnimation = new Animation(0.16f, playerFrames);
 		stateTime = 0f;
 		
 		Gdx.input.setInputProcessor(new GestureDetector(new SwipeGestureHandler()));
@@ -84,6 +88,8 @@ public class Player {
 		
 		//Handle jumping
 		if(isJumping){
+			playerSprite.setTexture(playerJump);
+			playerSprite.setRegion(playerJump);
 			if(goingDown){
 				playerSprite.setY(playerSprite.getY() - jumpSpeed * delta);
 				if(playerSprite.getY() < baseY ) playerSprite.setY(baseY);
@@ -101,8 +107,9 @@ public class Player {
 		}
 		//Handle sliding
 		if(isSliding){
-			currentFrame = runAnimation.getKeyFrames()[26];
-			playerSprite.setRegion(currentFrame);
+
+			playerSprite.setTexture(playerSlide);
+			playerSprite.setRegion(playerSlide);
 			
 			if(rising){
 				playerSprite.setY(playerSprite.getY() + slideSpeed  * delta);
@@ -117,11 +124,11 @@ public class Player {
 			}else if(playerSprite.getY() >= baseY){
 				isSliding = false;
 				rising = false;
+				playerSprite.setTexture(playerSheet);
 			}
 		}
 		
 		game.batch.begin();
-		//game.batch.draw(currentFrame, playerSprite.getX(),playerSprite.getY());
 		playerSprite.draw(game.batch);
 		game.batch.end();
 	}
