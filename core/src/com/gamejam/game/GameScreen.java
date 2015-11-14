@@ -37,6 +37,7 @@ public class GameScreen implements Screen{
 	private OrthographicCamera camera;
 	private boolean gameOver;
 	private int score;
+	private int nextTime;
 
 	public GameScreen(GameJam game) {
 		this.baseY = 200;
@@ -58,7 +59,8 @@ public class GameScreen implements Screen{
 		camera.setToOrtho(false, 1024, 768);
 		myTrainSpeed = -400;
 		this.enemies = new ArrayList<Enemy>();
-		
+		nextTime = MathUtils.random(1, 6);
+
 		myDrawGoText = false;
 
 		
@@ -111,15 +113,14 @@ public class GameScreen implements Screen{
 		
 		for(int i = 0; i < this.enemies.size(); ++i){
 			this.enemies.get(i).render(delta, myTrainSpeed);
-			if(this.enemies.get(i).enemySprite.getX() < -baseY){
+			if(this.enemies.get(i).enemySprite.getX() < -100){
 				this.enemies.remove(i);
 				--i;
 			}
 		}
 		
-		if(enemies.size() < 2){
-			spawnEnemy();
-		}
+		spawnEnemy();
+		
 		player.update(delta);
 		//Render time
 		game.batch.begin();
@@ -133,11 +134,13 @@ public class GameScreen implements Screen{
 
 	public void spawnEnemy(){
 		//Spawn only every x second
-		int rand = MathUtils.random(2, 7);
-		if(System.currentTimeMillis() - rand * 1000 < lastEnemySpawn){
+		long curr = System.currentTimeMillis();
+		if(curr -lastEnemySpawn < nextTime *100){
 			return;
 		}
-		Enemy en = new Enemy(this.game, game.screenWidth + 200, baseY);
+		nextTime = MathUtils.random(2, 20);
+
+		Enemy en = new Enemy(this.game, game.screenWidth + 200, baseY-20);
 		this.enemies.add(en);
 		lastEnemySpawn = System.currentTimeMillis();
 	}

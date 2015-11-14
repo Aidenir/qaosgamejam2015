@@ -14,8 +14,8 @@ public class Enemy {
 
 	public Enemy(GameJam game, int x, int y){
 		this.game = game;
-		Texture img = new Texture(Gdx.files.internal("playerSprite.png"));
-		enemySprite = new Sprite(img, 76,136);
+		Texture img = new Texture(Gdx.files.internal("villian.png"));
+		enemySprite = new Sprite(img);
 		enemySprite.setX(x);
 		enemySprite.setY(y);
 	}
@@ -28,7 +28,12 @@ public class Enemy {
 		}
 		//Then check collision with player
 		Player player = ((GameScreen)game.getScreen()).player;
-		if(player.playerSprite.getBoundingRectangle().overlaps(this.enemySprite.getBoundingRectangle())){
+		float px = player.playerSprite.getX() + player.playerSprite.getWidth()/2;
+		float py = player.playerSprite.getY() + player.playerSprite.getHeight()/2;
+		float ex = enemySprite.getX() + enemySprite.getWidth()/2;
+		float ey = enemySprite.getY() + enemySprite.getHeight()/2; 
+		if((px > ex - 50 && px < ex+50) && py < ey + 20 && py > ey - 20){ 
+		//if(player.playerSprite.getBoundingRectangle().overlaps(this.enemySprite.getBoundingRectangle())){
 			//this.enemySprite.setY(300);
 			if(!hasHurt){
 				player.decreaseLife(1);
