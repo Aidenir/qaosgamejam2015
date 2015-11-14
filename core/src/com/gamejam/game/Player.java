@@ -14,6 +14,7 @@ public class Player {
 	final private GameJam game;
 	final private int FRAME_COLS = 4;
 	final private int FRAME_ROWS = 1;
+	final private float totalBlinkingTime = 1;
 	
 	//Graphics and stuff for player
 	Animation runAnimation;
@@ -23,6 +24,10 @@ public class Player {
 	float stateTime;
 	
 	public Sprite playerSprite;
+	private Sprite playerLife0;
+	private Sprite playerLife1;
+	private Sprite playerLife2;
+	private Sprite playerLife3;
 	private Texture playerImg;
 	private Texture playerSlide;
 	private int playerImgWidth;
@@ -34,6 +39,8 @@ public class Player {
 	private int baseY = 200;
 	private int baseX = 100;
 	private int life = 4;
+	private float blinkingTime;
+	private float lastBlinkTime;
 
 	private boolean goingDown;
 	private boolean isSliding;
@@ -66,6 +73,14 @@ public class Player {
 		runAnimation = new Animation(0.16f, playerFrames);
 		stateTime = 0f;
 		
+		blinkingTime = 0;
+		lastBlinkTime = 0;
+		
+		Texture life1Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture life2Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture life3Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture life4Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		
 		Gdx.input.setInputProcessor(new GestureDetector(new SwipeGestureHandler()));
 
 	}
@@ -85,6 +100,8 @@ public class Player {
 		stateTime += Gdx.graphics.getDeltaTime();
 		currentFrame = runAnimation.getKeyFrame(stateTime, true);
 		playerSprite.setRegion(currentFrame);
+		
+		HandleBlinking(delta);
 		
 		//Handle jumping
 		if(isJumping){
@@ -132,6 +149,53 @@ public class Player {
 		playerSprite.draw(game.batch);
 		game.batch.end();
 	}
+	
+	private void DrawLife()
+	{
+		if(life == 3)
+		{
+			
+		}
+		else if(life == 2)
+		{
+			
+		}
+		else if(life == 1)
+		{
+			
+		}
+		else if(life == 0)
+		{
+			
+		}
+	}
+	
+	private void HandleBlinking(float aDelta)
+		{
+			blinkingTime -= aDelta;
+			if(blinkingTime > 0)
+			{
+				lastBlinkTime += aDelta;
+				if(lastBlinkTime > 0.2f )
+				{
+					lastBlinkTime = 0.f;
+				}
+				else if(lastBlinkTime < 0.1f)
+				{
+					playerSprite.setAlpha(0.7f);
+				}
+				else
+				{
+					playerSprite.setAlpha(1.f);
+				}	
+			}
+			else
+			{
+				lastBlinkTime = 0;
+				playerSprite.setAlpha(1.f);
+			}
+			
+		}
 	
 	public void handleInput(){
 		
@@ -233,6 +297,7 @@ public class Player {
 
 	public void decreaseLife(int i) {
 		life--;
+		blinkingTime = totalBlinkingTime;
 		if(life == 0){
 			((GameScreen) game.getScreen()).gameOver();
 		}
