@@ -317,7 +317,7 @@ public class Player {
 		
 		if(blinkingTime < 0)
 		{
-			life--;
+			//life--;
 			Gdx.input.vibrate(300);
 			blinkingTime = totalBlinkingTime;
 			if(life == 0){
