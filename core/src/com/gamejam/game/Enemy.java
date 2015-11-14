@@ -62,21 +62,21 @@ public class Enemy {
 
 
 		myEmitterData = new EmitterData();
-		myEmitterData.myAmountPerSpawn = 20;
+		myEmitterData.myAmountPerSpawn = 100;
 		myEmitterData.myDeltaAlpha = -3.0f;
 		myEmitterData.myDeltaScale = -1.f;
-		myEmitterData.myDeltaVelocity = -0.0f;
+		myEmitterData.myDeltaVelocity = -100.0f;
 		myEmitterData.myGravityForce = -1600.f;
 		myEmitterData.myLifeTime = 30.f;
 		myEmitterData.myMaxPosX = 15.f;
 		myEmitterData.myMaxPosY = 15.f;
 		myEmitterData.myMinPosX = -15.f;
 		myEmitterData.myMinPosY = -15.f;
-		myEmitterData.myMaxVelocityX = 1000.f;
-		myEmitterData.myMaxVelocityY = 1200.f;
+		myEmitterData.myMaxVelocityX = 1500.f;
+		myEmitterData.myMaxVelocityY = 2500.f;
 		myEmitterData.myMinVelocityX = 500.f;
-		myEmitterData.myMinVelocityY = 200.f;
-		myEmitterData.myParticleLifeTime = 0.5f;
+		myEmitterData.myMinVelocityY = 600.f;
+		myEmitterData.myParticleLifeTime = 1.0f;
 		myEmitterData.mySpawnPerSecond = 100.f;
 		myEmitterData.myStartAlpha = 1.f;
 		myEmitterData.myStartScale = 1.f;
@@ -125,8 +125,8 @@ public class Enemy {
 				Emitter emitter = new Emitter();
 				emitter.Init(myEmitterData);
 				emitter.Start();
-				emitter.myPositionX = 300.f;
-				emitter.myPositionY = 300.f;
+				emitter.myPositionX = 100.f;
+				emitter.myPositionY = 250.f;
 				
 				myEmitters.add(emitter);
 			}

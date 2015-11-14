@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -41,6 +42,7 @@ public class GameScreen implements Screen{
 	private boolean gameOver;
 	private int score;
 	private int nextTime;
+	private Music trainMusic;
 
 	public GameScreen(GameJam game) {
 		this.baseY = 200;
@@ -64,7 +66,11 @@ public class GameScreen implements Screen{
 		this.enemies = new ArrayList<Enemy>();
 		nextTime = MathUtils.random(1, 6);
 		myDrawGoText = false;
-
+		trainMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Train.wav"));
+		
+		trainMusic.setLooping(true);
+		trainMusic.setVolume(0.2f);
+		trainMusic.play();
 	}
 	
 	public void Update(float aDeltaTime)
@@ -137,9 +143,9 @@ public class GameScreen implements Screen{
 		game.font.getData().setScale(3);
 
 		game.font.setColor(new Color(0,0,0,1));
-		game.font.getData().setScale(1);
+		game.font.getData().setScale(1f);
 		game.batch.begin();
-		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 10, game.screenHeight - 10);
+		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 100, game.screenHeight - 100);
 		game.batch.end();
 		}
 	
@@ -150,7 +156,7 @@ public class GameScreen implements Screen{
 		if(curr -lastEnemySpawn < nextTime *100){
 			return;
 		}
-		nextTime = MathUtils.random(2, 20);
+		nextTime = MathUtils.random(4, 20);
 
 		Enemy en = new Enemy(this.game, game.screenWidth + 200, baseY-20);
 		this.enemies.add(en);
@@ -189,6 +195,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void dispose() {
 		this.enemies.clear();
+		trainMusic.stop();
 		game.setScreen(new GameOverScreen(game,score));
 
 	}

@@ -51,7 +51,7 @@ public class GameOverScreen implements Screen{
 			game.font.draw(game.batch, "You were " + diff + " seconds from beating the highscore", 100, max - 250);
 		}
 		game.batch.end();
-		if(Gdx.input.justTouched() && System.currentTimeMillis() - starttime > 3*1000){
+		if(Gdx.input.justTouched() && System.currentTimeMillis() - starttime > 1.5*1000){
 			this.game.setScreen(new MainMenuScreen(this.game));
 		}
 	}

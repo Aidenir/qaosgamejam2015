@@ -1,6 +1,7 @@
 package com.gamejam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -49,6 +50,8 @@ public class Player {
 	private boolean rising;
 	private int slideSpeed = 150;
 	private int slideDepth = 50;
+	private Sound punchSound;
+	private Sound jumpSound;
 	private Texture playerJump; 
 	
 	public Player(GameJam game){
@@ -62,6 +65,8 @@ public class Player {
 		playerSprite.setX(baseX);
 		playerSprite.setY(baseY);
 		isJumping = false;
+		punchSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Punch.wav"));
+		jumpSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/jump.mp3"));
 		
 		playerSheet = new Texture(Gdx.files.internal("playerRunning.png"));
 		TextureRegion[][] tmp = TextureRegion.split(playerSheet, playerSheet.getWidth()/FRAME_COLS, playerSheet.getHeight()/FRAME_ROWS);
@@ -216,6 +221,7 @@ public class Player {
 		if(isJumping) return;
 		this.isJumping = true;
 		this.goingDown = false;
+		jumpSound.play(1f);
 	}
 	
 	
@@ -223,6 +229,7 @@ public class Player {
 		if(isSliding) return;
 		this.isSliding = true;
 		this.rising = false;
+		punchSound.play(1f);
 	}
 	
 	public void swipeUp(){
