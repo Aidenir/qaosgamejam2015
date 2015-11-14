@@ -31,7 +31,7 @@ public class Enemy {
 	final private int FRAME_COLS = 4;
 	final private int FRAME_ROWS = 1;
 	
-	private int type;
+	public int type;
 
 	private int myTrainSpeed;
 
@@ -112,7 +112,7 @@ public class Enemy {
 		float py = player.playerSprite.getY() + player.playerSprite.getHeight()/2;
 		float ex = enemySprite.getX() + enemySprite.getWidth()/2;
 		float ey = enemySprite.getY() + enemySprite.getHeight()/2; 
-		if((px > ex - 50 && px < ex+50) && (py < ey + 20 || type == 1) && py > ey - 20){ 
+		if((px > ex - 50 && px < ex+50) && (py < ey + 20 || type == 1) && (py > ey - 20 || type == 0)){ 
 			//this.enemySprite.setY(300);
 			if(!hasHurt){
 				player.decreaseLife(1);
