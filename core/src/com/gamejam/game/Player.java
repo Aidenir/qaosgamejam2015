@@ -1,6 +1,7 @@
 package com.gamejam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -214,7 +215,8 @@ public class Player {
 		}
 	
 	public void handleInput(){
-		
+		if(Gdx.input.isKeyPressed(Keys.UP)) jump();
+		if(Gdx.input.isKeyPressed(Keys.DOWN)) slide();
 	}
 	
 	public void jump(){

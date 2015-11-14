@@ -29,7 +29,14 @@ public class GameScreen implements Screen{
 	private Train myTrain;
 	private float myTrainSpeed;
 	private float myTrainDistanceTraveled;
+	private float myGoFontTime;
+	private boolean myDrawGoText;
 	
+	private boolean hasSeenBig = false;
+	private boolean hasSeenSmall = false;
+	private boolean paused = false;
+	private boolean hasRendered = false;
+	private int type;
 	//Enemies
 	private ArrayList<Enemy> enemies;
 	private long lastEnemySpawn;
@@ -93,11 +100,15 @@ public class GameScreen implements Screen{
 	
 	
 	public void render(float delta) {
-		if(gameOver) this.dispose();
+
+
+		game.batch.setProjectionMatrix(camera.combined);
+
 		Gdx.gl.glClearColor(0, 0, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(gameOver) this.dispose();
+
 		long currTime = System.currentTimeMillis();
-		game.batch.setProjectionMatrix(camera.combined);
 		
 		Update(delta);
 		
@@ -123,7 +134,6 @@ public class GameScreen implements Screen{
 		player.update(delta);
 		//Render time
 
-
 	
 		
 		game.font.setColor(new Color(0,1,0,1));
@@ -134,6 +144,9 @@ public class GameScreen implements Screen{
 		game.batch.begin();
 		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 10, game.screenHeight - 10);
 		game.batch.end();
+		
+		
+		
 		}
 	
 
