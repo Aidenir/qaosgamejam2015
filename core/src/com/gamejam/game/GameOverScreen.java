@@ -11,10 +11,13 @@ public class GameOverScreen implements Screen{
 	private OrthographicCamera camera;
 	private int score;
 	private long starttime;
+	private int diff;
 
 	public GameOverScreen(GameJam game, int score) {
 		this.game = game;
 		this.score = score;
+		diff = game.highScore.get(0) - score;
+
 		game.registerHighScore(score);
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(false, game.screenWidth,game.screenHeight);
@@ -42,9 +45,8 @@ public class GameOverScreen implements Screen{
 		game.font.draw(game.batch, "The police caught you, sadface ;(", 100, max - 50);
 		game.font.draw(game.batch, "Tap anywhere to play again", 100, max - 100);
 		game.font.draw(game.batch, "You managed to stay alive for " + score + " seconds!", 100, max - 200);
-		int diff = game.highScore.get(0) - score;
 		if(diff < 0){
-			game.font.draw(game.batch, "You beat the previous highscore by" + diff + " seconds!", 100, max - 250);
+			game.font.draw(game.batch, "You beat the previous highscore by " + Math.abs(diff) + " seconds!", 100, max - 250);
 		}else{
 			game.font.draw(game.batch, "You were " + diff + " seconds from beating the highscore", 100, max - 250);
 		}

@@ -39,7 +39,7 @@ public class Player {
 	private int jumpSpeed = 900;
 	private int jumpHeight = 500;
 	private int baseY = 200;
-	private int baseX = 100;
+	private int baseX = 150;
 	private int life = 4;
 	private float blinkingTime;
 	private float lastBlinkTime;

@@ -31,10 +31,7 @@ public class GameScreen implements Screen{
 	private float myGoFontTime;
 	private boolean myDrawGoText;
 	
-	//Emitters
-	private ArrayList<Emitter> myEmitters;
-	private EmitterData myEmitterData;
-	private Texture myEmitterTexture;
+
 	
 	//Enemies
 	private ArrayList<Enemy> enemies;
@@ -65,30 +62,9 @@ public class GameScreen implements Screen{
 		camera.setToOrtho(false, 1024, 768);
 		myTrainSpeed = -400;
 		this.enemies = new ArrayList<Enemy>();
-		this.myEmitters = new ArrayList<Emitter>();
 		nextTime = MathUtils.random(1, 6);
 		myDrawGoText = false;
 
-		myEmitterData = new EmitterData();
-		myEmitterData.myAmountPerSpawn = 20;
-		myEmitterData.myDeltaAlpha = -3.0f;
-		myEmitterData.myDeltaScale = -1.f;
-		myEmitterData.myDeltaVelocity = -0.0f;
-		myEmitterData.myGravityForce = -1600.f;
-		myEmitterData.myLifeTime = 30.f;
-		myEmitterData.myMaxPosX = 15.f;
-		myEmitterData.myMaxPosY = 15.f;
-		myEmitterData.myMinPosX = -15.f;
-		myEmitterData.myMinPosY = -15.f;
-		myEmitterData.myMaxVelocityX = 1000.f;
-		myEmitterData.myMaxVelocityY = 1200.f;
-		myEmitterData.myMinVelocityX = 500.f;
-		myEmitterData.myMinVelocityY = 200.f;
-		myEmitterData.myParticleLifeTime = 0.5f;
-		myEmitterData.mySpawnPerSecond = 100.f;
-		myEmitterData.myStartAlpha = 1.f;
-		myEmitterData.myStartScale = 1.f;
-		myEmitterData.myTexture = new Texture(Gdx.files.internal("blood.png"));
 	}
 	
 	public void Update(float aDeltaTime)
@@ -109,23 +85,8 @@ public class GameScreen implements Screen{
 		camera.update();
 		myBackground.Update(aDeltaTime);
 		myTrain.Update(aDeltaTime, myTrainSpeed);
-		UpdateEmitters(aDeltaTime);
 	}
 	
-	private void UpdateEmitters(float aDeltaTime)
-	{
-		for(int i = myEmitters.size() - 1; i >= 0; i-- )
-		{
-			if(myEmitters.get(i).IsDead() == false)
-			{
-				myEmitters.get(i).Update(aDeltaTime, myTrainSpeed);				
-			}
-			else
-			{
-				myEmitters.remove(i);
-			}
-		}
-	}
 	
 	public void render(float delta) {
 		if(gameOver) this.dispose();
@@ -158,13 +119,7 @@ public class GameScreen implements Screen{
 
 			if(this.enemies.get(i).enemySprite.getX() < -100)
 			{
-				Emitter emitter = new Emitter();
-				emitter.Init(myEmitterData);
-				emitter.Start();
-				emitter.myPositionX = 300.f;
-				emitter.myPositionY = 300.f;
 				
-				myEmitters.add(emitter);
 				this.enemies.remove(i);
 				--i;
 			}
@@ -176,12 +131,7 @@ public class GameScreen implements Screen{
 		//Render time
 
 
-		for(int j = 0; j < myEmitters.size(); j++)
-		{
-			game.batch.begin();
-			myEmitters.get(j).Draw(game.batch);
-			game.batch.end();
-		}
+	
 		
 		game.font.setColor(new Color(0,1,0,1));
 		game.font.getData().setScale(3);
