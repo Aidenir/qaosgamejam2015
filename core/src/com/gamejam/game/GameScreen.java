@@ -1,31 +1,38 @@
 package com.gamejam.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
 
 public class GameScreen implements Screen{
 	
 	// Constants
 	final private GameJam game;
-	final private Player player;
+	final public Player player;
+	final private int baseY;
 	
 	//bg elements
 	private Background myBackground;
+	
 	private Train myTrain;
 	private float myTrainSpeed;
 	
-	//tMp shit
-	private Sprite enemy;
+	//Enemies
+	private ArrayList<Enemy> enemies;
+	private long lastEnemySpawn;
 	
 	
 	private OrthographicCamera camera;
 
 	public GameScreen(GameJam game) {
+		this.baseY = 200;
 		this.game = game;
 		this.player = new Player(this.game);
 		this.myBackground = new Background();
@@ -34,10 +41,10 @@ public class GameScreen implements Screen{
 		myTrain.Init();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 768);
-		
 		myTrainSpeed = -100;
+		this.enemies = new ArrayList<Enemy>();
+
 		
-		setupEnemy();
 	}
 	
 	public void Update(float aDeltaTime)
@@ -54,37 +61,40 @@ public class GameScreen implements Screen{
 		
 		Update(delta);
 		
-		// Render the train
+		// Render Scene
 		game.batch.begin();
 		
 		myBackground.Draw(game.batch);
 		myTrain.Draw(game.batch);
-		
+
 		game.batch.end();
 		
-		updateEnemy();
+		for(int i = 0; i < this.enemies.size(); ++i){
+			this.enemies.get(i).render(delta);
+			if(this.enemies.get(i).enemySprite.getX() < -baseY){
+				this.enemies.remove(i);
+				--i;
+			}
+		}
+		
+		if(enemies.size() < 2){
+			spawnEnemy();
+		}
 		player.update(delta);
 
 	}
 
-	
-	public void setupEnemy(){
-		Texture img = new Texture(Gdx.files.internal("playerSprite.png"));
-		enemy = new Sprite(img, 76,136);
-		enemy.setScale(1.0f);
-		enemy.setY(100);
-		enemy.setX(game.screenWidth + 300);
-	}
-	
-	public void updateEnemy(){
-		game.batch.begin();
-		enemy.setX(enemy.getX() - 200 * Gdx.graphics.getDeltaTime());
-		if(enemy.getX() < - 100){
-			enemy.setX(game.screenWidth + 300);
+	public void spawnEnemy(){
+		//Spawn only every x second
+		int rand = MathUtils.random(2, 7);
+		if(System.currentTimeMillis() - rand * 1000 < lastEnemySpawn){
+			return;
 		}
-		enemy.draw(game.batch);
-		game.batch.end();
+		Enemy en = new Enemy(this.game, game.screenWidth + 200, baseY);
+		this.enemies.add(en);
+		lastEnemySpawn = System.currentTimeMillis();
 	}
+	
 	
 	@Override
 	public void show() {
@@ -112,13 +122,11 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		this.enemies.clear();
+
 	}
 }
