@@ -7,6 +7,9 @@ import com.gamejam.game.GameJam;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new GameJam(1024,768), config);
+		config.title = "Game Jam";
+		config.width = 1920;
+		config.height = 1080;
+		new LwjglApplication(new GameJam(1920,1080), config);
 	}
 }
