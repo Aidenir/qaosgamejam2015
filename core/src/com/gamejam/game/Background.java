@@ -1,5 +1,7 @@
 package com.gamejam.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,7 +26,7 @@ public class Background {
 	private Sprite myCopenHagenNear1;
 	private Sprite myCopenHagenNear2;
 	
-	private final float myTunnleSpeed = -2800;
+	private final float myTunnleSpeed = -5000;
 	private final float myTunnleScale = 1.6f;
 	private final float myTunnleYStartPosition = 130;
 	private Sprite myTunnle1;
@@ -41,6 +43,8 @@ public class Background {
 	private Sprite myBridgeBackground1;
 	private Sprite myBridgeBackground2;
 	
+	private Emitter mySparkleMachine;
+	
 	private BackgroundState myState;
 	private float myStateChangeTime;
 	
@@ -54,6 +58,34 @@ public class Background {
 		CopenhagenSetup();
 		TunnleSetup();
 		BridgeSetup();
+		 
+		EmitterData myEmitterData = new EmitterData();
+		myEmitterData.myAmountPerSpawn = 100;
+		myEmitterData.myDeltaAlpha = -3.0f;
+		myEmitterData.myDeltaScale = -1.f;
+		myEmitterData.myDeltaVelocity = -100.0f;
+		myEmitterData.myGravityForce = -1600.f;
+		myEmitterData.myLifeTime = 300.f;
+		myEmitterData.myMaxPosX = 15.f;
+		myEmitterData.myMaxPosY = 15.f;
+		myEmitterData.myMinPosX = -15.f;
+		myEmitterData.myMinPosY = -15.f;
+		myEmitterData.myMaxVelocityX = 1500.f;
+		myEmitterData.myMaxVelocityY = 2500.f;
+		myEmitterData.myMinVelocityX = 500.f;
+		myEmitterData.myMinVelocityY = 600.f;
+		myEmitterData.myParticleLifeTime = 1.0f;
+		myEmitterData.mySpawnPerSecond = 100.f;
+		myEmitterData.myStartAlpha = 1.f;
+		myEmitterData.myStartScale = 1.f;
+		myEmitterData.myTexture = new Texture(Gdx.files.internal("Sparkly.png"));
+		
+		mySparkleMachine = new Emitter();
+		
+		mySparkleMachine.Init(myEmitterData);
+		mySparkleMachine.myPositionX = 400;
+		mySparkleMachine.myPositionY = 400;
+		mySparkleMachine.Start();
 	}
 	
 	private void CopenhagenSetup()
@@ -103,8 +135,8 @@ public class Background {
 		myBridgeBackground1 = new Sprite(bridgeBackground);
 		myBridgeBackground2 = new Sprite(bridgeBackground);
 		
-		myWaterBackground1.setPosition(myWaterBackground2.getWidth() * myWaterBackgroundScale * 2, myWaterBackgroundYStartPosition);
-		myWaterBackground2.setPosition(myWaterBackground2.getWidth() * myWaterBackgroundScale, myWaterBackgroundYStartPosition);
+		myWaterBackground1.setPosition(myWaterBackground1.getWidth() * myWaterBackgroundScale * -2, myWaterBackgroundYStartPosition);
+		myWaterBackground2.setPosition(myWaterBackground2.getWidth() * myWaterBackgroundScale * -1, myWaterBackgroundYStartPosition);
 		
 		myWaterBackground1.setScale(myWaterBackgroundScale);
 		myWaterBackground2.setScale(myWaterBackgroundScale);
@@ -123,6 +155,7 @@ public class Background {
 		{
 		case COPENHAGEN:
 			CopenHagenUpdate(aDeltaTime);
+			mySparkleMachine.Update(aDeltaTime, 0);
 			break;
 			
 		case TUNNLE:
@@ -131,6 +164,7 @@ public class Background {
 			
 		case BRIDGE:
 			BridgeUpdate(aDeltaTime);
+			mySparkleMachine.Update(aDeltaTime, 0);
 			break;
 			
 		case COPENHAGEN_TO_TUNNLE:
@@ -141,6 +175,7 @@ public class Background {
 		case TUNNLE_TO_BRIDGE:
 			TunnleUpdate(aDeltaTime);
 			BridgeUpdate(aDeltaTime);
+			
 			
 			break;
 			default:
@@ -164,7 +199,7 @@ public class Background {
 			}
 			else if(myState == BackgroundState.TUNNLE)
 			{
-				myStateChangeTime = 7.f;
+				myStateChangeTime = 2.f;
 				myState = BackgroundState.TUNNLE_TO_BRIDGE;
 			}
 		}
@@ -230,6 +265,8 @@ public class Background {
 			myCopenHagenFar2.draw(aBatch);
 			myCopenHagenNear1.draw(aBatch);
 			myCopenHagenNear2.draw(aBatch);
+			
+			mySparkleMachine.Draw(aBatch);
 			break;
 			
 		case TUNNLE:
@@ -242,6 +279,7 @@ public class Background {
 			myWaterBackground2.draw(aBatch);
 			myBridgeBackground1.draw(aBatch);
 			myBridgeBackground2.draw(aBatch);
+			mySparkleMachine.Draw(aBatch);
 			break;
 			
 		case COPENHAGEN_TO_TUNNLE:
