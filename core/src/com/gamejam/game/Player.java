@@ -14,6 +14,7 @@ public class Player {
 	final private GameJam game;
 	final private int FRAME_COLS = 6;
 	final private int FRAME_ROWS = 5;
+	final private float totalBlinkingTime = 1;
 	
 	//Graphics and stuff for player
 	Animation runAnimation;
@@ -33,6 +34,8 @@ public class Player {
 	private int baseY = 200;
 	private int baseX = 100;
 	private int life = 4;
+	private float blinkingTime;
+	private float lastBlinkTime;
 
 	private boolean goingDown;
 	private boolean isSliding;
@@ -62,6 +65,9 @@ public class Player {
 		runAnimation = new Animation(0.025f, playerFrames);
 		stateTime = 0f;
 		
+		blinkingTime = 0;
+		lastBlinkTime = 0;
+		
 		Gdx.input.setInputProcessor(new GestureDetector(new SwipeGestureHandler()));
 
 	}
@@ -81,6 +87,8 @@ public class Player {
 		stateTime += Gdx.graphics.getDeltaTime();
 		currentFrame = runAnimation.getKeyFrame(stateTime, true);
 		playerSprite.setRegion(currentFrame);
+		
+		HandleBlinking(delta);
 		
 		//Handle jumping
 		if(isJumping){
@@ -125,6 +133,33 @@ public class Player {
 		playerSprite.draw(game.batch);
 		game.batch.end();
 	}
+	
+	private void HandleBlinking(float aDelta)
+		{
+			blinkingTime -= aDelta;
+			if(blinkingTime > 0)
+			{
+				lastBlinkTime += aDelta;
+				if(lastBlinkTime > 0.2f )
+				{
+					lastBlinkTime = 0.f;
+				}
+				else if(lastBlinkTime < 0.1f)
+				{
+					playerSprite.setAlpha(0.7f);
+				}
+				else
+				{
+					playerSprite.setAlpha(1.f);
+				}	
+			}
+			else
+			{
+				lastBlinkTime = 0;
+				playerSprite.setAlpha(1.f);
+			}
+			
+		}
 	
 	public void handleInput(){
 		
@@ -226,6 +261,7 @@ public class Player {
 
 	public void decreaseLife(int i) {
 		life--;
+		blinkingTime = totalBlinkingTime;
 		if(life == 0){
 			((GameScreen) game.getScreen()).gameOver();
 		}
