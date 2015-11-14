@@ -48,7 +48,7 @@ public class MainMenuScreen implements Screen {
 		game.font.draw(game.batch, "Swipe up to jump", 100, max - 100);
 		game.font.draw(game.batch, "Swipe down to slide", 100, max - 150);
 		float multi = (float) Math.cos(animation);
-		game.font.getData().setScale(0.9f + multi *0.1f);
+		game.font.getData().setScale(0.9f + multi *0.05f);
 
 		game.font.draw(game.batch, "Tap anywhere to begin playing", 100, max - 220);
 		game.font.getData().setScale(0.9f);
