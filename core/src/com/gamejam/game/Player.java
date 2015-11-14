@@ -24,6 +24,10 @@ public class Player {
 	float stateTime;
 	
 	public Sprite playerSprite;
+	private Sprite playerLife0;
+	private Sprite playerLife1;
+	private Sprite playerLife2;
+	private Sprite playerLife3;
 	private Texture playerImg;
 	private int playerImgWidth;
 	private int playerImgHeight;
@@ -67,6 +71,11 @@ public class Player {
 		
 		blinkingTime = 0;
 		lastBlinkTime = 0;
+		
+		Texture life1Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture life2Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture life3Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture life4Texture = new Texture(Gdx.files.internal("playerSprite.png"));
 		
 		Gdx.input.setInputProcessor(new GestureDetector(new SwipeGestureHandler()));
 
@@ -132,6 +141,26 @@ public class Player {
 		//game.batch.draw(currentFrame, playerSprite.getX(),playerSprite.getY());
 		playerSprite.draw(game.batch);
 		game.batch.end();
+	}
+	
+	private void DrawLife()
+	{
+		if(life == 3)
+		{
+			
+		}
+		else if(life == 2)
+		{
+			
+		}
+		else if(life == 1)
+		{
+			
+		}
+		else if(life == 0)
+		{
+			
+		}
 	}
 	
 	private void HandleBlinking(float aDelta)
