@@ -87,7 +87,7 @@ public class Train
 			if(wheels[i].getX() < -100){
 				wheels[i].setX(1920);
 			}
-			wheels[i].rotate(10);
+			wheels[i].rotate(40);
 		}
 		UpdateTrainTilePositions(movementThisFrame);
 	}
