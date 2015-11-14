@@ -155,9 +155,10 @@ public class Player {
 				playerSprite.setTexture(playerSheet);
 			}
 		}		
-		
+		game.batch.begin();
 		playerSprite.draw(game.batch);
 		DrawLife();
+		game.batch.end();
 	}
 	
 	private void DrawLife()

@@ -141,13 +141,15 @@ public class GameScreen implements Screen{
 
 		myBackground.Draw(game.batch);
 		myTrain.Draw(game.batch);
-		
+		game.batch.end();
 		if(myDrawGoText == true)
 		{
 			if(myGoFontTime < myGoFontTimeLimit)
 			{
 				myGoFontTime += delta;
+				game.batch.begin();
 				game.font.draw(game.batch, "Go and catch the bastards!", 450, 450);
+				game.batch.end();
 			}
 		}
 		
@@ -176,7 +178,9 @@ public class GameScreen implements Screen{
 
 		for(int j = 0; j < myEmitters.size(); j++)
 		{
+			game.batch.begin();
 			myEmitters.get(j).Draw(game.batch);
+			game.batch.end();
 		}
 		
 		game.font.setColor(new Color(0,1,0,1));
@@ -184,6 +188,7 @@ public class GameScreen implements Screen{
 
 		game.font.setColor(new Color(0,0,0,1));
 		game.font.getData().setScale(1);
+		game.batch.begin();
 		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 10, game.screenHeight - 10);
 		game.batch.end();
 		}

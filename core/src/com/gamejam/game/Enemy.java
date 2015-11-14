@@ -48,9 +48,9 @@ public class Enemy {
 		}
 		
 		//Then render
-		
+		game.batch.begin();
 		enemySprite.draw(game.batch);
-		
+		game.batch.end();
 	}
 	
 	
