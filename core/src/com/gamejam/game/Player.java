@@ -28,12 +28,17 @@ public class Player {
 	private int playerImgHeight;
 
 	private boolean isJumping;
-	private int jumpSpeed = 900;
-	private int jumpHeight = 300;
-	private int baseY = 100;
+	private int jumpSpeed = 1000;
+	private int jumpHeight = 500;
+	private int baseY = 200;
 	private int baseX = 100;
+	private int life = 4;
 
 	private boolean goingDown;
+	private boolean isSliding;
+	private boolean rising;
+	private int slideSpeed = 200;
+	private int slideDepth = 150; 
 	
 	public Player(GameJam game){
 		this.game = game;
@@ -67,6 +72,7 @@ public class Player {
 		currentFrame = runAnimation.getKeyFrame(stateTime, true);
 		playerSprite.setRegion(currentFrame);
 		
+		//Handle jumping
 		if(isJumping){
 			if(goingDown){
 				playerSprite.setY(playerSprite.getY() - jumpSpeed * delta);
@@ -74,12 +80,33 @@ public class Player {
 			}else{
 				playerSprite.setY(playerSprite.getY() + jumpSpeed * delta);
 			}
+			
 			if(playerSprite.getY() > jumpHeight){
 				this.goingDown = true;
 			}
 			else if(playerSprite.getY() <= baseY){
 				isJumping = false;
 				goingDown = false;
+			}
+		}
+		//Handle sliding
+		if(isSliding){
+			currentFrame = runAnimation.getKeyFrames()[26];
+			playerSprite.setRegion(currentFrame);
+			
+			if(rising){
+				playerSprite.setY(playerSprite.getY() + slideSpeed  * delta);
+				if(playerSprite.getY() > baseY) playerSprite.setY(baseY);
+			}
+			else{
+				playerSprite.setY(playerSprite.getY() - slideSpeed * delta);
+			}
+			
+			if(playerSprite.getY() < baseY - slideDepth){
+				this.rising = true;
+			}else if(playerSprite.getY() >= baseY){
+				isSliding = false;
+				rising = false;
 			}
 		}
 		
@@ -99,11 +126,18 @@ public class Player {
 		this.goingDown = false;
 	}
 	
+	
+	public void slide(){
+		if(isSliding) return;
+		this.isSliding = true;
+		this.rising = false;
+	}
+	
 	public void swipeUp(){
 		jump();
 	}
 	public void swipeDown(){
-		
+		slide();
 	}
 	public void swipeRight(){
 		
@@ -178,5 +212,12 @@ public class Player {
 		}
 
 
+	}
+
+	public void decreaseLife(int i) {
+		life--;
+		if(life == 0){
+			game.setScreen(new GameOverScreen(game));
+		}
 	}
 }
