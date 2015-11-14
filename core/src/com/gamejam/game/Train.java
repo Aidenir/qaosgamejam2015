@@ -56,9 +56,9 @@ public class Train
 		wheels = new Sprite[4];
 		Texture wheel = new Texture(Gdx.files.internal("wheel.png"));
 		for(int i = 0; i < 4; ++i){
-			wheels[i] = new Sprite(wheel, 10,10);
-			wheels[i].setY(50);
-			wheels[i].setX(50 + 50*i);
+			wheels[i] = new Sprite(wheel);
+			wheels[i].setY(-10);
+			wheels[i].setX(100 + 100*i);
 		}
 		
 	}
@@ -84,7 +84,10 @@ public class Train
 		float movementThisFrame = aDeltaTime * aTrainSpeed;
 		for(int i = 0; i < 4; ++i){
 			wheels[i].setX(wheels[i].getX() + movementThisFrame);
-			wheels[i].rotate(45);
+			if(wheels[i].getX() < -100){
+				wheels[i].setX(1000);
+			}
+			wheels[i].rotate(10);
 		}
 		UpdateTrainTilePositions(movementThisFrame);
 	}
@@ -108,12 +111,13 @@ public class Train
 	
 	public void Draw(SpriteBatch aBatch)
 	{
+		for(int i = 0; i < 4; ++i){
+			wheels[i].draw(aBatch);
+		}
 		for(int i=0; i < myTrainTiles.size(); i++)	
 		{
 			myTrainTiles.get(i).draw(aBatch);
 		}
-		for(int i = 0; i < 4; ++i){
-			wheels[i].draw(aBatch);
-		}
+
 	}
 }
