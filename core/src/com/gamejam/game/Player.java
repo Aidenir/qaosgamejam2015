@@ -48,7 +48,7 @@ public class Player {
 	private boolean isSliding;
 	private boolean rising;
 	private int slideSpeed = 150;
-	private int slideDepth = 150;
+	private int slideDepth = 50;
 	private Texture playerJump; 
 	
 	public Player(GameJam game){
@@ -57,8 +57,8 @@ public class Player {
 		playerImg = new Texture(Gdx.files.internal("playerSprite.png"));
 		playerSlide = new Texture(Gdx.files.internal("playerKick.png"));
 		playerJump = new Texture(Gdx.files.internal("playerJump.png"));
-		playerSprite = new Sprite(playerImg, 85,102);
-		playerSprite.setScale(2);
+		playerSprite = new Sprite(playerImg);
+		playerSprite.setScale(1.5f);
 		playerSprite.setX(baseX);
 		playerSprite.setY(baseY);
 		isJumping = false;
@@ -154,12 +154,10 @@ public class Player {
 				rising = false;
 				playerSprite.setTexture(playerSheet);
 			}
-		}
+		}		
 		
-		game.batch.begin();
 		playerSprite.draw(game.batch);
 		DrawLife();
-		game.batch.end();
 	}
 	
 	private void DrawLife()
@@ -312,6 +310,7 @@ public class Player {
 		if(blinkingTime < 0)
 		{
 			life--;
+			Gdx.input.vibrate(300);
 			blinkingTime = totalBlinkingTime;
 			if(life == 0){
 				((GameScreen) game.getScreen()).gameOver();

@@ -43,6 +43,7 @@ public class GameScreen implements Screen{
 	private OrthographicCamera camera;
 	private boolean gameOver;
 	private int score;
+	private int nextTime;
 
 	public GameScreen(GameJam game) {
 		this.baseY = 200;
@@ -65,6 +66,7 @@ public class GameScreen implements Screen{
 		myTrainSpeed = -400;
 		this.enemies = new ArrayList<Enemy>();
 		this.myEmitters = new ArrayList<Emitter>();
+		nextTime = MathUtils.random(1, 6);
 		myDrawGoText = false;
 
 		myEmitterData = new EmitterData();
@@ -148,10 +150,10 @@ public class GameScreen implements Screen{
 				game.font.draw(game.batch, "Go and catch the bastards!", 450, 450);
 			}
 		}
-		game.batch.end();
 		
 		for(int i = 0; i < this.enemies.size(); ++i){
 			this.enemies.get(i).render(delta, myTrainSpeed);
+
 			if(this.enemies.get(i).enemySprite.getX() < -100)
 			{
 				Emitter emitter = new Emitter();
@@ -166,32 +168,36 @@ public class GameScreen implements Screen{
 			}
 		}
 		
-		if(enemies.size() < 2){
-			spawnEnemy();
-		}
+		spawnEnemy();
+		
 		player.update(delta);
 		//Render time
-		game.batch.begin();
 
-		for(int i = 0; i < myEmitters.size(); i++)
+
+		for(int j = 0; j < myEmitters.size(); j++)
 		{
-			myEmitters.get(i).Draw(game.batch);
+			myEmitters.get(j).Draw(game.batch);
 		}
 		
 		game.font.setColor(new Color(0,1,0,1));
 		game.font.getData().setScale(3);
+
+		game.font.setColor(new Color(0,0,0,1));
+		game.font.getData().setScale(1);
 		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 10, game.screenHeight - 10);
 		game.batch.end();
-
-	}
+		}
+	
 
 	public void spawnEnemy(){
 		//Spawn only every x second
-		int rand = MathUtils.random(2, 7);
-		if(System.currentTimeMillis() - rand * 1000 < lastEnemySpawn){
+		long curr = System.currentTimeMillis();
+		if(curr -lastEnemySpawn < nextTime *100){
 			return;
 		}
-		Enemy en = new Enemy(this.game, game.screenWidth + 200, baseY);
+		nextTime = MathUtils.random(2, 20);
+
+		Enemy en = new Enemy(this.game, game.screenWidth + 200, baseY-20);
 		this.enemies.add(en);
 		lastEnemySpawn = System.currentTimeMillis();
 	}
