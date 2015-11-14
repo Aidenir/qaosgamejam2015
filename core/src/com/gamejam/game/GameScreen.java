@@ -61,7 +61,7 @@ public class GameScreen implements Screen{
 		myTrainSpeed = -100;
 		this.enemies = new ArrayList<Enemy>();
 		starttime = System.currentTimeMillis();
-		camera.setToOrtho(false, 1024, 768);
+		camera.setToOrtho(false, game.screenWidth, game.screenHeight);
 		myTrainSpeed = -400;
 		this.enemies = new ArrayList<Enemy>();
 		nextTime = MathUtils.random(1, 6);
@@ -145,7 +145,7 @@ public class GameScreen implements Screen{
 		game.font.setColor(new Color(0,0,0,1));
 		game.font.getData().setScale(1f);
 		game.batch.begin();
-		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 100, game.screenHeight - 100);
+		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 10, game.screenHeight - 10);
 		game.batch.end();
 		}
 	
@@ -156,7 +156,7 @@ public class GameScreen implements Screen{
 		if(curr -lastEnemySpawn < nextTime *100){
 			return;
 		}
-		nextTime = MathUtils.random(4, 20);
+		nextTime = MathUtils.random(7, 20);
 
 		Enemy en = new Enemy(this.game, game.screenWidth + 200, baseY-20);
 		this.enemies.add(en);

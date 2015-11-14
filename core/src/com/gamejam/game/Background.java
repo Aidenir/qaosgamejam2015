@@ -91,7 +91,7 @@ public class Background {
 	private void CopenhagenSetup()
 	{
 		Texture copenHagenFar = new Texture(Gdx.files.internal("copenhagenFar.png"));
-		Texture copenHagenNear = new Texture(Gdx.files.internal("copenhagenNear.png"));
+		Texture copenHagenNear = new Texture(Gdx.files.internal("copenHagenNear.png"));
 		
 		myCopenHagenFar1 = new Sprite(copenHagenFar);
 		myCopenHagenFar2 = new Sprite(copenHagenFar);
