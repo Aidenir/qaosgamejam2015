@@ -22,9 +22,10 @@ public class Background {
 	
 	public void Init()
 	{
-		Texture background = new Texture(Gdx.files.internal("background1.jpg"));
-		myBackground1 = new Sprite(background,myImageWidth,myImageHeigth);
-		myBackground2 = new Sprite(background,myImageWidth,myImageHeigth);
+		Texture background1 = new Texture(Gdx.files.internal("background1.jpg"));
+		Texture background2 = new Texture(Gdx.files.internal("background2.jpg"));
+		myBackground1 = new Sprite(background1,myImageWidth,myImageHeigth);
+		myBackground2 = new Sprite(background2,myImageWidth,myImageHeigth);
 		
 		myBackground1.setPosition(0, myYStartPosition);
 		myBackground2.setPosition(myImageWidth * myScale, myYStartPosition);

@@ -16,7 +16,8 @@ public class GameScreen implements Screen{
 	
 	//bg elements
 	private Background myBackground;
-	private Sprite train;
+	private Train myTrain;
+	private float myTrainSpeed;
 	
 	//tMp shit
 	private Sprite enemy;
@@ -29,13 +30,12 @@ public class GameScreen implements Screen{
 		this.player = new Player(this.game);
 		this.myBackground = new Background();
 		myBackground.Init();
+		this.myTrain = new Train();
+		myTrain.Init();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 768);
 		
-		Texture trainImg = new Texture(Gdx.files.internal("playerSprite.png"));
-		
-		train = new Sprite(trainImg, 76,136);
-		train.setY(400);
+		myTrainSpeed = -100;
 		
 		setupEnemy();
 	}
@@ -44,6 +44,7 @@ public class GameScreen implements Screen{
 	{
 		camera.update();
 		myBackground.Update(aDeltaTime);
+		myTrain.Update(aDeltaTime, myTrainSpeed);
 	}
 	
 	public void render(float delta) {
@@ -57,11 +58,8 @@ public class GameScreen implements Screen{
 		game.batch.begin();
 		
 		myBackground.Draw(game.batch);
+		myTrain.Draw(game.batch);
 		
-		for(int i = 0; i < 10; ++i){
-			train.setX(i * 80);
-			train.draw(game.batch);
-		}
 		game.batch.end();
 		
 		updateEnemy();
