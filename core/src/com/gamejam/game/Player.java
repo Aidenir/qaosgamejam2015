@@ -83,18 +83,18 @@ public class Player {
 		blinkingTime = 0;
 		lastBlinkTime = 0;
 		
-		Texture life1Texture = new Texture(Gdx.files.internal("playerSprite.png"));
-		Texture life2Texture = new Texture(Gdx.files.internal("playerSprite.png"));
-		Texture life3Texture = new Texture(Gdx.files.internal("playerSprite.png"));
-		Texture life4Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		Texture life1Texture = new Texture(Gdx.files.internal("life4-02.png"));
+		Texture life2Texture = new Texture(Gdx.files.internal("life3-02.png"));
+		Texture life3Texture = new Texture(Gdx.files.internal("life2-02.png"));
+		Texture life4Texture = new Texture(Gdx.files.internal("life1-02.png"));
 		
 		playerLife1 = new Sprite(life1Texture);
 		playerLife1.setPosition(lifeXPosition, lifeYPosition);
-		playerLife2 = new Sprite(life1Texture);
+		playerLife2 = new Sprite(life2Texture);
 		playerLife2.setPosition(lifeXPosition, lifeYPosition);
-		playerLife3 = new Sprite(life1Texture);
+		playerLife3 = new Sprite(life3Texture);
 		playerLife3.setPosition(lifeXPosition, lifeYPosition);
-		playerLife4 = new Sprite(life1Texture);
+		playerLife4 = new Sprite(life4Texture);
 		playerLife4.setPosition(lifeXPosition, lifeYPosition);
 		
 		Gdx.input.setInputProcessor(new GestureDetector(new SwipeGestureHandler()));
@@ -317,7 +317,7 @@ public class Player {
 		
 		if(blinkingTime < 0)
 		{
-			//life--;
+			life--;
 			Gdx.input.vibrate(300);
 			blinkingTime = totalBlinkingTime;
 			if(life == 0){

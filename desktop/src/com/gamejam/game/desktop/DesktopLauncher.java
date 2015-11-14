@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Game Jam";
 		config.width = 1024;
-		config.height = 576;
+		config.height = 768;
 		new LwjglApplication(new GameJam(config.width,config.height), config);
 	}
 }

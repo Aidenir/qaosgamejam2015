@@ -1,14 +1,14 @@
 package com.gamejam.game;
 
-import java.util.ArrayList;
+
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.audio.Music;
 
 public class Background {
 	
@@ -32,7 +32,7 @@ public class Background {
 	private Sprite myTunnle1;
 	private Sprite myTunnle2;
 	
-	private final float myWaterBackgroundSpeed = -200;
+	private final float myWaterBackgroundSpeed = -50;
 	private final float myWaterBackgroundScale = 2.f;
 	private final float myWaterBackgroundYStartPosition = 210;
 	private final float myBridgeBackgroundSpeed = -2800;
@@ -49,6 +49,43 @@ public class Background {
 	private float myStateChangeTime;
 	
 	private float myTotalTime;
+	
+	
+	Animation SeagullAnimation;
+	Texture animationSheet;
+	TextureRegion[] animationFrames;
+	TextureRegion currentFrame;
+	float stateTime;
+	final private int FRAME_COLS = 3;
+	final private int FRAME_ROWS = 1;
+	final private float seaGullSpeed = 100;
+	Music mySeagullAudio;
+	boolean hasPlayedSeaGullAudio;
+	private Sprite mySeagull;
+	
+	public void SeagullUpdate(float aDeltaTime)
+	{
+		if(mySeagull.getX() < 300)
+		{
+			if(hasPlayedSeaGullAudio == false)
+			{
+				mySeagullAudio.setLooping(false);
+				mySeagullAudio.setVolume(0.2f);
+				mySeagullAudio.play();
+				hasPlayedSeaGullAudio = true;
+			}
+		}
+		
+		if(mySeagull.getX() < -200)
+		{
+			hasPlayedSeaGullAudio = false;
+			mySeagull.setPosition(2000, mySeagull.getX());
+		}
+		stateTime += aDeltaTime;
+		mySeagull.setPosition(mySeagull.getWidth() - aDeltaTime * seaGullSpeed  , mySeagull.getHeight());
+		currentFrame = SeagullAnimation.getKeyFrame(stateTime, true);
+		mySeagull.setRegion(currentFrame);
+	}
 	
 	public void Init()
 	{
@@ -86,6 +123,21 @@ public class Background {
 		mySparkleMachine.myPositionX = 400;
 		mySparkleMachine.myPositionY = 400;
 		mySparkleMachine.Start();
+		animationSheet = new Texture(Gdx.files.internal("gulls2-01.png"));
+		mySeagull = new Sprite(animationSheet);
+		mySeagull.setPosition(2000, 250);
+		TextureRegion[][] tmp = TextureRegion.split(animationSheet, animationSheet.getWidth()/FRAME_COLS, animationSheet.getHeight()/FRAME_ROWS);
+		animationFrames = new TextureRegion[FRAME_COLS*FRAME_ROWS];
+		int index = 0;
+		for(int i = 0; i < FRAME_ROWS; ++i){
+			for(int j = 0 ; j < FRAME_COLS; ++j){
+				animationFrames[index++] = tmp[i][j];
+			}
+		}
+		SeagullAnimation = new Animation(0.08f, animationFrames);
+		stateTime = 0f;
+		
+		mySeagullAudio = Gdx.audio.newMusic(Gdx.files.internal("Sounds/SeaGull.wav"));
 	}
 	
 	private void CopenhagenSetup()
@@ -127,7 +179,7 @@ public class Background {
 	
 	private void BridgeSetup() 
 	{
-		Texture waterBackground = new Texture(Gdx.files.internal("waterBackground.png"));
+		Texture waterBackground = new Texture(Gdx.files.internal("bg3.2-02.png"));
 		Texture bridgeBackground = new Texture(Gdx.files.internal("bridge background.png"));
 		
 		myWaterBackground1 = new Sprite(waterBackground);
@@ -232,6 +284,7 @@ public class Background {
 	
 	private void BridgeUpdate(float aDeltaTime)
 	{
+		SeagullUpdate(aDeltaTime);
 		BackgroundUpdate(myWaterBackground1, myWaterBackground2, aDeltaTime, myWaterBackgroundSpeed, myWaterBackgroundScale);
 		BackgroundUpdate(myBridgeBackground1, myBridgeBackground2, aDeltaTime, myBridgeBackgroundSpeed, myBridgeBackgroundScale);
 	}
@@ -280,6 +333,7 @@ public class Background {
 			myBridgeBackground1.draw(aBatch);
 			myBridgeBackground2.draw(aBatch);
 			mySparkleMachine.Draw(aBatch);
+			mySeagull.draw(aBatch);
 			break;
 			
 		case COPENHAGEN_TO_TUNNLE:
@@ -298,6 +352,7 @@ public class Background {
 			myWaterBackground2.draw(aBatch);
 			myBridgeBackground1.draw(aBatch);
 			myBridgeBackground2.draw(aBatch);
+			mySeagull.draw(aBatch);
 			break;
 
 			default:
