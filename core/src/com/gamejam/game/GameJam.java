@@ -36,7 +36,7 @@ public class GameJam extends Game {
 
 		batch = new SpriteBatch();
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), false);
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new IntroScreen(this));
 		if(highScore == null) this.highScore = new ArrayList<Integer>();
 	}
 
