@@ -66,6 +66,16 @@ public class Player {
 
 	}
 	
+	public void SetPosition(float anX, float anY)
+	{
+		playerSprite.setPosition(anX, anY);
+	}
+	
+	public void SetRelativePosition(float anX, float anY)
+	{
+		playerSprite.setPosition(playerSprite.getX() + anX, playerSprite.getY()+ anY);
+	}
+	
 	public void update(float delta){
 		this.handleInput();
 		stateTime += Gdx.graphics.getDeltaTime();

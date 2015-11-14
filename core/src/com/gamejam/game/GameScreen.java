@@ -14,14 +14,21 @@ public class GameScreen implements Screen{
 	// Constants
 	final private GameJam game;
 	final public Player player;
+	final private float myPlayerStartXPostion = 500;
+	final private float baseX = 100;
 	final private int baseY;
 	final private long starttime;
+	final private float myStartWaitDistance = (baseX - myPlayerStartXPostion) * -1;
+	private final float myGoFontTimeLimit = 4;
 	
 	//bg elements
 	private Background myBackground;
 	
 	private Train myTrain;
 	private float myTrainSpeed;
+	private float myTrainDistanceTraveled;
+	private float myGoFontTime;
+	private boolean myDrawGoText;
 	
 	//Enemies
 	private ArrayList<Enemy> enemies;
@@ -33,7 +40,10 @@ public class GameScreen implements Screen{
 		this.baseY = 200;
 		this.game = game;
 		this.player = new Player(this.game);
+		this.player.SetPosition(myPlayerStartXPostion, baseY);
+		this.myTrainDistanceTraveled = 0;
 		this.myBackground = new Background();
+		this.myGoFontTime = 0;
 		myBackground.Init();
 		this.myTrain = new Train();
 		myTrain.Init();
@@ -42,11 +52,30 @@ public class GameScreen implements Screen{
 		myTrainSpeed = -100;
 		this.enemies = new ArrayList<Enemy>();
 		starttime = System.currentTimeMillis();
+		camera.setToOrtho(false, 1024, 768);
+		myTrainSpeed = -400;
+		this.enemies = new ArrayList<Enemy>();
+		
+		myDrawGoText = false;
+
 		
 	}
 	
 	public void Update(float aDeltaTime)
 	{
+		float trainDistaneThisFrame = aDeltaTime * -myTrainSpeed;
+		myTrainDistanceTraveled += trainDistaneThisFrame;
+		
+		if(myTrainDistanceTraveled < myStartWaitDistance)
+		{
+			myDrawGoText = false;
+			player.SetRelativePosition(-trainDistaneThisFrame, 0);
+		}
+		else
+		{
+			myDrawGoText = true;
+		}
+		
 		camera.update();
 		myBackground.Update(aDeltaTime);
 		myTrain.Update(aDeltaTime, myTrainSpeed);
@@ -65,11 +94,19 @@ public class GameScreen implements Screen{
 
 		myBackground.Draw(game.batch);
 		myTrain.Draw(game.batch);
-
+		
+		if(myDrawGoText == true)
+		{
+			if(myGoFontTime < myGoFontTimeLimit)
+			{
+				myGoFontTime += delta;
+				game.font.draw(game.batch, "Go and catch the bastards!", 450, 450);
+			}
+		}
 		game.batch.end();
 		
 		for(int i = 0; i < this.enemies.size(); ++i){
-			this.enemies.get(i).render(delta);
+			this.enemies.get(i).render(delta, myTrainSpeed);
 			if(this.enemies.get(i).enemySprite.getX() < -baseY){
 				this.enemies.remove(i);
 				--i;
