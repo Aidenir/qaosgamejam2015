@@ -28,7 +28,7 @@ public class Player {
 	private int playerImgHeight;
 
 	private boolean isJumping;
-	private int jumpSpeed = 1000;
+	private int jumpSpeed = 900;
 	private int jumpHeight = 500;
 	private int baseY = 200;
 	private int baseX = 100;
@@ -37,7 +37,7 @@ public class Player {
 	private boolean goingDown;
 	private boolean isSliding;
 	private boolean rising;
-	private int slideSpeed = 200;
+	private int slideSpeed = 150;
 	private int slideDepth = 150; 
 	
 	public Player(GameJam game){

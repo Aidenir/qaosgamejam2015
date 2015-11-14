@@ -29,10 +29,10 @@ public class Enemy {
 		//Then check collision with player
 		Player player = ((GameScreen)game.getScreen()).player;
 		if(player.playerSprite.getBoundingRectangle().overlaps(this.enemySprite.getBoundingRectangle())){
-			this.enemySprite.setY(300);
+			//this.enemySprite.setY(300);
 			if(!hasHurt){
 				player.decreaseLife(1);
-				Gdx.input.vibrate(100);
+				Gdx.input.vibrate(300);
 				hasHurt = true;
 			}
 		}

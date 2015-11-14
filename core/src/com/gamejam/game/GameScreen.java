@@ -35,9 +35,12 @@ public class GameScreen implements Screen{
 	private long lastEnemySpawn;
 	
 	private OrthographicCamera camera;
+	private boolean gameOver;
+	private int score;
 
 	public GameScreen(GameJam game) {
 		this.baseY = 200;
+		this.gameOver = false;
 		this.game = game;
 		this.player = new Player(this.game);
 		this.player.SetPosition(myPlayerStartXPostion, baseY);
@@ -82,6 +85,7 @@ public class GameScreen implements Screen{
 	}
 	
 	public void render(float delta) {
+		if(gameOver) this.dispose();
 		Gdx.gl.glClearColor(0, 0, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		long currTime = System.currentTimeMillis();
@@ -170,12 +174,14 @@ public class GameScreen implements Screen{
 	@Override
 	public void dispose() {
 		this.enemies.clear();
+		game.setScreen(new GameOverScreen(game,score));
 
 	}
 
 	public void gameOver() {
 		long currTime = System.currentTimeMillis();
-		int score = (int) ((currTime - starttime) / 1000);
-		game.setScreen(new GameOverScreen(game,score));
+		this.score = (int) ((currTime - starttime) / 1000);
+		//this.enemies.clear();
+		this.gameOver = true;
 	}
 }
