@@ -8,7 +8,7 @@ public class Enemy {
 
 	GameJam game;
 	
-	private int moveSpeed = 600;
+	private int moveSpeed = 0;
 	public Sprite enemySprite;
 	private boolean hasHurt = false;
 
@@ -20,9 +20,9 @@ public class Enemy {
 		enemySprite.setY(y);
 	}
 	
-	public void render(float delta){
+	public void render(float delta , float trainSpeed){
 		//First move
-		enemySprite.setX(enemySprite.getX() - moveSpeed * delta);
+		enemySprite.setX(enemySprite.getX() + (trainSpeed +  moveSpeed) * delta);
 		if(enemySprite.getX() < -100){
 			this.dispose();
 		}
