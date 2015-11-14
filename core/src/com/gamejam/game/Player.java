@@ -15,6 +15,8 @@ public class Player {
 	final private int FRAME_COLS = 4;
 	final private int FRAME_ROWS = 1;
 	final private float totalBlinkingTime = 1;
+	final private float lifeXPosition = 900;
+	final private float lifeYPosition = 650;
 	
 	//Graphics and stuff for player
 	Animation runAnimation;
@@ -24,10 +26,10 @@ public class Player {
 	float stateTime;
 	
 	public Sprite playerSprite;
-	private Sprite playerLife0;
 	private Sprite playerLife1;
 	private Sprite playerLife2;
 	private Sprite playerLife3;
+	private Sprite playerLife4;
 	private Texture playerImg;
 	private Texture playerSlide;
 	private int playerImgWidth;
@@ -80,6 +82,15 @@ public class Player {
 		Texture life2Texture = new Texture(Gdx.files.internal("playerSprite.png"));
 		Texture life3Texture = new Texture(Gdx.files.internal("playerSprite.png"));
 		Texture life4Texture = new Texture(Gdx.files.internal("playerSprite.png"));
+		
+		playerLife1 = new Sprite(life1Texture);
+		playerLife1.setPosition(lifeXPosition, lifeYPosition);
+		playerLife2 = new Sprite(life1Texture);
+		playerLife2.setPosition(lifeXPosition, lifeYPosition);
+		playerLife3 = new Sprite(life1Texture);
+		playerLife3.setPosition(lifeXPosition, lifeYPosition);
+		playerLife4 = new Sprite(life1Texture);
+		playerLife4.setPosition(lifeXPosition, lifeYPosition);
 		
 		Gdx.input.setInputProcessor(new GestureDetector(new SwipeGestureHandler()));
 
@@ -147,26 +158,27 @@ public class Player {
 		
 		game.batch.begin();
 		playerSprite.draw(game.batch);
+		DrawLife();
 		game.batch.end();
 	}
 	
 	private void DrawLife()
 	{
-		if(life == 3)
+		if(life == 4)
 		{
-			
+			playerLife4.draw(game.batch);
+		}
+		else if(life == 3)
+		{
+			playerLife3.draw(game.batch);
 		}
 		else if(life == 2)
 		{
-			
+			playerLife2.draw(game.batch);
 		}
 		else if(life == 1)
 		{
-			
-		}
-		else if(life == 0)
-		{
-			
+			playerLife1.draw(game.batch);
 		}
 	}
 	
@@ -296,10 +308,15 @@ public class Player {
 	}
 
 	public void decreaseLife(int i) {
-		life--;
-		blinkingTime = totalBlinkingTime;
-		if(life == 0){
-			((GameScreen) game.getScreen()).gameOver();
+		
+		if(blinkingTime < 0)
+		{
+			life--;
+			blinkingTime = totalBlinkingTime;
+			if(life == 0){
+				((GameScreen) game.getScreen()).gameOver();
+			}
 		}
+		
 	}
 }
