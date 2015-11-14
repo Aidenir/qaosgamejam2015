@@ -33,8 +33,9 @@ public class GameJam extends Game {
 		highScore = null;
 		highScore = json.fromJson(ArrayList.class, prefs.getString("highscore"));
 		
+
 		batch = new SpriteBatch();
-		font = new BitmapFont();
+		font = new BitmapFont(Gdx.files.internal("font.fnt"), false);
 		this.setScreen(new MainMenuScreen(this));
 		if(highScore == null) this.highScore = new ArrayList<Integer>();
 	}

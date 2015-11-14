@@ -125,8 +125,8 @@ public class GameScreen implements Screen{
 		//Render time
 		game.batch.begin();
 
-		game.font.setColor(new Color(0,1,0,1));
-		game.font.getData().setScale(3);
+		game.font.setColor(new Color(0,0,0,1));
+		game.font.getData().setScale(1);
 		game.font.draw(game.batch, "" + (currTime - starttime) / 1000 + "s", 10, game.screenHeight - 10);
 		game.batch.end();
 

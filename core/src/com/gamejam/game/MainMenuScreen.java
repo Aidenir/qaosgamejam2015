@@ -11,6 +11,7 @@ public class MainMenuScreen implements Screen {
 	final private GameJam game;
 	
 	private OrthographicCamera camera;
+	float animation = 0;
 	
 	public MainMenuScreen(GameJam game) {
 		this.game = game;
@@ -32,28 +33,38 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClearColor(0,0,0,0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.font.setColor(new Color(1,1,1,1));
-		game.font.getData().setScale(1);
 		this.camera.update();
 		game.batch.setProjectionMatrix(this.camera.combined);
 		
 		game.batch.begin();
-		game.font.getData().setScale(2);		
-		game.font.draw(game.batch, "High Score:", game.screenWidth/2, game.screenHeight - (game.screenHeight / 3) );
+		int max = game.screenHeight;
+		
+		animation += 0.1;
+		//if(animation > 3.14) animation = 0;
+	
+		game.font.getData().setScale(0.9f);
+
+		game.font.draw(game.batch, "Escape the angry police officers", 100, max -50);
+		game.font.draw(game.batch, "Swipe up to jump", 100, max - 100);
+		game.font.draw(game.batch, "Swipe down to slide", 100, max - 150);
+		float multi = (float) Math.cos(animation);
+		game.font.getData().setScale(0.9f + multi *0.1f);
+
+		game.font.draw(game.batch, "Tap anywhere to begin playing", 100, max - 220);
+		game.font.getData().setScale(0.9f);
+
+		game.font.getData().setScale(1.0f);		
+		game.font.draw(game.batch, "High Score:", 100, max - 300);
 
 		for(int i = 0; i < game.highScore.size() ; ++i){
-			game.font.draw(game.batch, game.highScore.get(i) + "s", game.screenWidth/2, game.screenHeight - (game.screenHeight / 3) - (i + 1)*40);
+			game.font.draw(game.batch, game.highScore.get(i) + "s", 100, max - 350 - 50*i);
 		}
-		game.font.getData().setScale(1);
-
-
-		game.font.draw(game.batch, "Escape the angry police officers", 100, 150);
-		game.font.draw(game.batch, "Tap anywhere to begin playing", 100, 100);
-		game.batch.end();
-				
+		
 		if(Gdx.input.justTouched()){
 			this.game.setScreen(new GameScreen(this.game));
 		}
-		
+		game.batch.end();
+
 	}
 
 	@Override
