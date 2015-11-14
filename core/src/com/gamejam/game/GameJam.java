@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Json;
 
 public class GameJam extends Game {
 	
@@ -24,10 +27,16 @@ public class GameJam extends Game {
 	}
 
 	public void create () {
+		//get a preferences instance
+		Preferences prefs = Gdx.app.getPreferences("gamejame");
+		Json json = new Json();
+		highScore = null;
+		highScore = json.fromJson(ArrayList.class, prefs.getString("highscore"));
+		
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		this.setScreen(new MainMenuScreen(this));
-		this.highScore = new ArrayList<Integer>();
+		if(highScore == null) this.highScore = new ArrayList<Integer>();
 	}
 
 
@@ -39,6 +48,14 @@ public class GameJam extends Game {
 		}
 
 		Collections.reverse(highScore);
+		
+		//get a preferences instance
+		Preferences prefs = Gdx.app.getPreferences("gamejame");
+		Json json = new Json();
+		prefs.putString("highscore", json.toJson(highScore));
+		//persist preferences
+		prefs.flush();
+
 		
 	}
 	
